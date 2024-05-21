@@ -29,11 +29,21 @@ class Offer(models.Model):
         if not self.url:
             self.url = f'{gen_random_url()}-redirect-link'
         super().save(*args, **kwargs)
-    
 
-class Lead(models.Model): # in this implementation Lead means Links entity and inherits its functionality
+    
+class Lead(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    offer = models.ForeignKey(Offer, related_name='leads', on_delete=models.CASCADE)
+    ip_address = models.GenericIPAddressField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'Lead {self.ip_address}'
+    
+    
+class Click(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    offer = models.ForeignKey(Offer, related_name='clicks', on_delete=models.CASCADE)
+    lead = models.ForeignKey(Lead, related_name='clicks', on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     browser = models.CharField(max_length=255, null=True, blank=True)
     os = models.CharField(max_length=255, null=True, blank=True)
@@ -41,4 +51,5 @@ class Lead(models.Model): # in this implementation Lead means Links entity and i
     geolocation = models.CharField(max_length=255, null=True, blank=True)
 
     def __str__(self):
-        return f'Lead on {self.offer}'
+        return f'Click on {self.offer} by {self.lead}'
+

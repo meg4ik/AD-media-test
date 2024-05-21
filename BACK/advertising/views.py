@@ -1,11 +1,10 @@
-from django.shortcuts import get_object_or_404, redirect
+
 from rest_framework import mixins, viewsets
-from rest_framework.views import APIView
 
-from .models import Campaign, Offer, Lead
-from .serializers import CampaignSerializer, OfferSerializer, LeadSerializer
 
-from .utils import get_user_ip
+from .models import Campaign, Offer, Lead, Click
+from .serializers import CampaignSerializer, OfferSerializer, LeadSerializer, ClickSerializer
+
 
 class ReadOnlyCreateDestroyModelViewSet(viewsets.GenericViewSet, 
                                         mixins.CreateModelMixin, 
@@ -27,18 +26,8 @@ class OfferViewSet(ReadOnlyCreateDestroyModelViewSet):
 class LeadViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin,):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
+    
 
-
-class RedirectView(APIView):
-    def get(self, request, local_url, format=None):
-        offer = get_object_or_404(Offer, local_url=local_url)
-        
-        lead = Lead.objects.create(
-            offer=offer,
-            browser=request.META.get('HTTP_USER_AGENT', 'unknown'),
-            os=request.META.get('HTTP_USER_AGENT', 'unknown'),
-            ip_address=get_user_ip(request),
-            geolocation='unknown'  # Геолокацию можно определить с помощью внешнего API
-        )
-
-        return redirect(offer.redirect_url)
+class ClickViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin,):
+    queryset = Click.objects.all()
+    serializer_class = ClickSerializer
