@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:13.3-alpine
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${DB_NAME1}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./BACK/.env
+
+  django:
+    build: ./BACK
+    command: /docker-entrypoint.sh python manage.py runserver 0.0.0.0:8088
+    volumes:
+      - ./BACK:/source
+    ports:
+      - '8088:8088'
+    depends_on:
+      - db
+    env_file:
+      - ./BACK/.env
+    restart: on-failure
