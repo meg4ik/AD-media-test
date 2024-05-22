@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Pagination from './Pagination';
+import Pagination from '../Pagination';
 
-const CampaignList = () => {
-  const [campaigns, setCampaigns] = useState([]);
+const OfferList = () => {
+  const [offers, setOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [filterInput, setFilterInput] = useState('');
   const [ordering, setOrdering] = useState('');
 
-  const fetchCampaigns = async (page = 1, filter = '', order = '') => {
+  const fetchOffers = async (page = 1, filter = '', order = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/campaigns/', {
+      const response = await axios.get('http://127.0.0.1:8000/api/offers/', {
         params: {
           page: page,
           search: filter,
           ordering: order,
         },
       });
-      setCampaigns(response.data.results);
+      setOffers(response.data.results);
       setCurrentPage(page);
       setTotalPages(Math.ceil(response.data.count / 10));
     } catch (error) {
@@ -31,28 +31,28 @@ const CampaignList = () => {
   };
 
   useEffect(() => {
-    fetchCampaigns();
+    fetchOffers();
   }, []);
 
   const handleFilterChange = (e) => {
     const value = e.target.value || '';
     setFilterInput(value);
-    fetchCampaigns(1, value, ordering);
+    fetchOffers(1, value, ordering);
   };
 
   const handlePageChange = (page) => {
-    fetchCampaigns(page, filterInput, ordering);
+    fetchOffers(page, filterInput, ordering);
   };
 
   const handleSortChange = (e) => {
     const value = e.target.value || '';
     setOrdering(value);
-    fetchCampaigns(1, filterInput, value);
+    fetchOffers(1, filterInput, value);
   };
 
   return (
     <div className="mt-4">
-      <h2 className="text-xl font-bold mb-2">Campaigns List</h2>
+      <h2 className="text-xl font-bold mb-2">Offers List</h2>
       <input
         value={filterInput}
         onChange={handleFilterChange}
@@ -65,27 +65,35 @@ const CampaignList = () => {
         className="mb-4 border p-2 w-full"
       >
         <option value="">Sort By</option>
-        <option value="start_date">Start Date (Ascending)</option>
-        <option value="-start_date">Start Date (Descending)</option>
-        <option value="end_date">End Date (Ascending)</option>
-        <option value="-end_date">End Date (Descending)</option>
+        <option value="name">Name (A-Z)</option>
+        <option value="-name">Name (Z-A)</option>
+        <option value="click_price">Click Price (Ascending)</option>
+        <option value="-click_price">Click Price (Descending)</option>
       </select>
       <table className="w-full border-collapse border">
         <thead>
           <tr>
             <th className="border p-2">Name</th>
-            <th className="border p-2">Start Date</th>
-            <th className="border p-2">End Date</th>
-            <th className="border p-2">Goal</th>
+            <th className="border p-2">Redirect URL</th>
+            <th className="border p-2">Referrer URL</th>
+            <th className="border p-2">Campaign</th>
+            <th className="border p-2">Click Price</th>
+            <th className="border p-2">Local URL</th>
           </tr>
         </thead>
         <tbody>
-          {campaigns.map(campaign => (
-            <tr key={campaign.id}>
-              <td className="border p-2">{campaign.name}</td>
-              <td className="border p-2">{campaign.start_date}</td>
-              <td className="border p-2">{campaign.end_date}</td>
-              <td className="border p-2">{campaign.goal}</td>
+          {offers.map(offer => (
+            <tr key={offer.id}>
+              <td className="border p-2">{offer.name}</td>
+              <td className="border p-2">{offer.redirect_url}</td>
+              <td className="border p-2">{offer.referrer_url}</td>
+              <td className="border p-2">{offer.campaign_name}</td>
+              <td className="border p-2">{offer.click_price}</td>
+              <td className="border p-2">
+                <a href={`http://127.0.0.1:8000/r/${offer.local_url}`} className="text-blue-500 hover:underline">
+                  {`http://127.0.0.1:8000/r/${offer.local_url}`}
+                </a>
+              </td>
             </tr>
           ))}
         </tbody>
@@ -99,4 +107,4 @@ const CampaignList = () => {
   );
 };
 
-export default CampaignList;
+export default OfferList;

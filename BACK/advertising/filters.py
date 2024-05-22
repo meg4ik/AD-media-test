@@ -1,11 +1,6 @@
 import django_filters
 from .models import Campaign, Offer, Lead, Click, LeadCampaignInterest
 
-class CampaignFilter(django_filters.FilterSet):
-    class Meta:
-        model = Campaign
-        fields = ['name', 'start_date', 'end_date']
-
 class OfferFilter(django_filters.FilterSet):
     class Meta:
         model = Offer

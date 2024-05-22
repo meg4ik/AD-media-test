@@ -5,7 +5,7 @@ from rest_framework.filters import OrderingFilter, SearchFilter
 
 from .models import Campaign, Offer, Lead, Click
 from .serializers import CampaignSerializer, OfferSerializer, LeadSerializer, ClickSerializer
-from .filters import CampaignFilter, OfferFilter, LeadFilter, ClickFilter
+from .filters import ClickFilter
 
 
 class CampaignViewSet(viewsets.ModelViewSet):
@@ -21,8 +21,9 @@ class OfferViewSet(viewsets.ModelViewSet):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
     http_method_names = ['get', 'post', 'delete']
-    filter_backends = [DjangoFilterBackend, OrderingFilter]
-    filterset_class = OfferFilter
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    search_fields = ['name', 'campaign__name']
+    ordering_fields = ['name', 'click_price']
 
 
 class LeadViewSet(mixins.ListModelMixin,
@@ -31,7 +32,6 @@ class LeadViewSet(mixins.ListModelMixin,
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_class = LeadFilter
     
 
 class ClickViewSet(mixins.ListModelMixin,

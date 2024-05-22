@@ -2,9 +2,9 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Campaigns from './components/Campaigns';
-import Offers from './components/Offers';
-import Leads from './components/Leads';
+import Campaigns from './components/Campaigns/Campaigns';
+import Offers from './components/Offers/Offers';
+import Leads from './components/Leads/Leads';
 import Clicks from './components/Clicks';
 
 const App = () => {

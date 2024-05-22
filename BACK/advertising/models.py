@@ -21,6 +21,7 @@ class Offer(models.Model):
     redirect_url = models.URLField(null=False, blank=False)
     referrer_url = models.URLField(null=False, blank=False)
     campaign = models.ForeignKey(Campaign, related_name='offers', on_delete=models.CASCADE)
+    click_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
 
     def __str__(self):
         return self.name

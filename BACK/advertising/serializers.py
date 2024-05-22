@@ -8,15 +8,20 @@ class CampaignSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OfferSerializer(serializers.ModelSerializer):
+    campaign_name = serializers.SerializerMethodField()
+
     class Meta:
         model = Offer
-        fields = '__all__'
+        fields = ['id', 'name', 'local_url', 'redirect_url', 'referrer_url', 'campaign', 'campaign_name', 'click_price']
         read_only_fields = ('local_url',)
 
     def create(self, validated_data):
         if 'local_url' not in validated_data:
             validated_data['local_url'] = gen_random_url()
         return super().create(validated_data)
+    
+    def get_campaign_name(self, obj):
+        return obj.campaign.name
 
 class LeadSerializer(serializers.ModelSerializer):
     class Meta:
