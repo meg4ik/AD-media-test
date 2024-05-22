@@ -53,3 +53,23 @@ class Click(models.Model):
     def __str__(self):
         return f'Click on {self.offer} by {self.lead}'
 
+class LeadCampaignInterest(models.Model):
+    INTEREST_CHOICES = [
+        (0, 'Немає інформації'),
+        (1, 'Дуже низька зацікавленість'),
+        (2, 'Низька зацікавленість'),
+        (3, 'Середня зацікавленість'),
+        (4, 'Висока зацікавленість'),
+        (5, 'Дуже висока зацікавленість'),
+    ]
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    lead = models.ForeignKey(Lead, related_name='campaign_interests', on_delete=models.CASCADE)
+    campaign = models.ForeignKey(Campaign, related_name='lead_interests', on_delete=models.CASCADE)
+    interest_score = models.IntegerField(choices=INTEREST_CHOICES, default=0)
+
+    class Meta:
+        unique_together = ('lead', 'campaign')
+
+    def __str__(self):
+        return f'{self.lead} - {self.campaign}: {self.interest_score}'
+    

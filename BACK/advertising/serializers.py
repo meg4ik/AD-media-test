@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Campaign, Offer, Lead, Click
+from .models import Campaign, Offer, Lead, Click, LeadCampaignInterest
 
 class CampaignSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,4 +19,11 @@ class LeadSerializer(serializers.ModelSerializer):
 class ClickSerializer(serializers.ModelSerializer):
     class Meta:
         model = Click
+        fields = '__all__'
+
+class LeadCampaignInterestSerializer(serializers.ModelSerializer):
+    interest_score_display = serializers.CharField(source='get_interest_score_display', read_only=True)
+
+    class Meta:
+        model = LeadCampaignInterest
         fields = '__all__'
