@@ -26,8 +26,8 @@ class Offer(models.Model):
         return self.name
     
     def save(self, *args, **kwargs):
-        if not self.url:
-            self.url = f'{gen_random_url()}-redirect-link'
+        if not self.local_url:
+            self.local_url = f'{gen_random_url()}-redirect-link'
         super().save(*args, **kwargs)
 
     

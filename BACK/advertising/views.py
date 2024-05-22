@@ -4,38 +4,37 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Campaign, Offer, Lead, Click
 from .serializers import CampaignSerializer, OfferSerializer, LeadSerializer, ClickSerializer
-from .filters import CampaignFilter, OfferFilter, LeadFilter, ClickFilter, LeadCampaignInterestFilter
+from .filters import CampaignFilter, OfferFilter, LeadFilter, ClickFilter
 
 
-class ReadOnlyCreateDestroyModelViewSet(viewsets.GenericViewSet, 
-                                        mixins.CreateModelMixin, 
-                                        mixins.RetrieveModelMixin, 
-                                        mixins.DestroyModelMixin):
-    pass
-
-
-class CampaignViewSet(ReadOnlyCreateDestroyModelViewSet):
+class CampaignViewSet(viewsets.ModelViewSet):
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
+    http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = CampaignFilter
 
 
-class OfferViewSet(ReadOnlyCreateDestroyModelViewSet):
+class OfferViewSet(viewsets.ModelViewSet):
     queryset = Offer.objects.all()
     serializer_class = OfferSerializer
+    http_method_names = ['get', 'post', 'delete']
     filter_backends = [DjangoFilterBackend]
     filterset_class = OfferFilter
 
 
-class LeadViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin,):
+class LeadViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = LeadFilter
     
 
-class ClickViewSet(viewsets.GenericViewSet, mixins.RetrieveModelMixin,):
+class ClickViewSet(mixins.ListModelMixin,
+                  mixins.RetrieveModelMixin,
+                  viewsets.GenericViewSet):
     queryset = Click.objects.all()
     serializer_class = ClickSerializer
     filter_backends = [DjangoFilterBackend]
