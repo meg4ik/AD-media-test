@@ -31,7 +31,8 @@ class LeadViewSet(mixins.ListModelMixin,
                   viewsets.GenericViewSet):
     queryset = Lead.objects.all()
     serializer_class = LeadSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    ordering_fields = ['ip_address', 'created_at']
     
 
 class ClickViewSet(mixins.ListModelMixin,

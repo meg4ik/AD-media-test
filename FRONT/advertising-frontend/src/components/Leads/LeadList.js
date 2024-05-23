@@ -11,7 +11,7 @@ const LeadList = () => {
   const fetchLeads = async (page = 1) => {
     setLoading(true);
     try {
-      const response = await axios.get('/api/leads/', {
+      const response = await axios.get('http://127.0.0.1:8000/api/leads/', {
         params: {
           page: page,
         },
@@ -42,6 +42,7 @@ const LeadList = () => {
           <tr>
             <th className="border p-2">IP Address</th>
             <th className="border p-2">Created At</th>
+            <th className="border p-2">Campaign Interests</th>
           </tr>
         </thead>
         <tbody>
@@ -49,6 +50,18 @@ const LeadList = () => {
             <tr key={lead.id}>
               <td className="border p-2">{lead.ip_address}</td>
               <td className="border p-2">{new Date(lead.created_at).toLocaleString()}</td>
+              <td className="border p-2">
+                <details>
+                  <summary className="cursor-pointer">View Campaign Interests</summary>
+                  <ul className="list-disc pl-4">
+                    {lead.campaign_interests.map(interest => (
+                      <li key={interest.campaign_name}>
+                        {interest.campaign_name}: {interest.interest_score_display}
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              </td>
             </tr>
           ))}
         </tbody>

@@ -5,7 +5,7 @@ import Home from './components/Home';
 import Campaigns from './components/Campaigns/Campaigns';
 import Offers from './components/Offers/Offers';
 import Leads from './components/Leads/Leads';
-import Clicks from './components/Clicks';
+import Clicks from './components/Clicks/Clicks';
 
 const App = () => {
   return (

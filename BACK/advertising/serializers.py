@@ -23,19 +23,22 @@ class OfferSerializer(serializers.ModelSerializer):
     def get_campaign_name(self, obj):
         return obj.campaign.name
 
-class LeadSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Lead
-        fields = '__all__'
-
-class ClickSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Click
-        fields = '__all__'
-
 class LeadCampaignInterestSerializer(serializers.ModelSerializer):
+    campaign_name = serializers.CharField(source='campaign.name', read_only=True)
     interest_score_display = serializers.CharField(source='get_interest_score_display', read_only=True)
 
     class Meta:
         model = LeadCampaignInterest
+        fields = ['campaign_name', 'interest_score', 'interest_score_display']
+
+class LeadSerializer(serializers.ModelSerializer):
+    campaign_interests = LeadCampaignInterestSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Lead
+        fields = ['id', 'ip_address', 'created_at', 'campaign_interests']
+
+class ClickSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Click
         fields = '__all__'

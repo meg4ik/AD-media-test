@@ -1,9 +1,14 @@
 import React from 'react';
+import LeadList from './LeadList';
+import LeadsGraph from './LeadsGraph';
+import ConversionsGraph from './ConversionsGraph';
 
 const Leads = () => {
   return (
     <div className="container mx-auto p-4">
-      <h1 className="text-2xl font-bold">Leads</h1>
+      <LeadList />
+      <LeadsGraph />
+      <ConversionsGraph />
     </div>
   );
 };

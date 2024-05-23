@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from user_agents import parse
 from django.db.models import Count
 from django.utils.dateparse import parse_date
+from django.db.models import Sum, F
 
 from advertising.models import Offer, Lead, Click, LeadCampaignInterest
 from .utils import get_user_ip, get_geolocation
@@ -103,3 +104,17 @@ class ConversionGraphView(APIView):
             conversion_data.append({'day': day, 'conversion_rate': conversion_rate})
 
         return Response(conversion_data)
+
+
+class RevenueGraphView(APIView):
+
+    def get(self, request, *args, **kwargs):
+        campaign_id = request.query_params.get('campaign_id')
+        if campaign_id:
+            revenue_data = Click.objects.filter(offer__campaign_id=campaign_id).values(day=F('timestamp__date')).annotate(revenue=Sum(F('offer__click_price')))
+        else:
+            revenue_data = Click.objects.values(day=F('timestamp__date')).annotate(revenue=Sum(F('offer__click_price')))
+        
+        data = [{"day": entry["day"], "revenue": entry["revenue"]} for entry in revenue_data]
+
+        return Response(data)
