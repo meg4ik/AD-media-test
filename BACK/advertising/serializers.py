@@ -39,6 +39,9 @@ class LeadSerializer(serializers.ModelSerializer):
         fields = ['id', 'ip_address', 'created_at', 'campaign_interests']
 
 class ClickSerializer(serializers.ModelSerializer):
+    campaign_name = serializers.CharField(source='offer.campaign.name', read_only=True)
+    offer_name = serializers.CharField(source='offer.name', read_only=True)
+
     class Meta:
         model = Click
-        fields = '__all__'
+        fields = ['id', 'timestamp', 'ip_address', 'browser', 'os', 'geolocation', 'campaign_name', 'offer_name']

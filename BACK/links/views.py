@@ -42,21 +42,23 @@ class RedirectView(APIView):
         return redirect(offer.redirect_url)
 
 class ClicksGraphView(APIView):
-    def get(self, request, format=None):
-        start_date = request.GET.get('start_date')
-        end_date = request.GET.get('end_date')
+
+    def get(self, request, *args, **kwargs):
+        campaign_id = request.query_params.get('campaign_id')
+        offer_id = request.query_params.get('offer_id')
         
-        if start_date and end_date:
-            start_date = parse_date(start_date)
-            end_date = parse_date(end_date)
-            clicks = Click.objects.filter(timestamp__range=[start_date, end_date])
-        else:
-            last_30_days = now() - timedelta(days=30)
-            clicks = Click.objects.filter(timestamp__gte=last_30_days)
+        clicks = Click.objects.all()
+
+        if campaign_id:
+            clicks = clicks.filter(offer__campaign_id=campaign_id)
+        if offer_id:
+            clicks = clicks.filter(offer_id=offer_id)
+
+        clicks_data = clicks.values(day=F('timestamp__date')).annotate(count=Count('id'))
         
-        clicks = clicks.extra({'day': 'date(timestamp)'}).values('day').annotate(count=Count('id')).order_by('day')
-        
-        return Response(clicks)
+        data = [{"day": entry["day"], "count": entry["count"]} for entry in clicks_data]
+
+        return Response(data)
     
 
 class LeadsGraphView(APIView):

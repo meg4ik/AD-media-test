@@ -53,6 +53,7 @@ class Click(models.Model):
 
     def __str__(self):
         return f'Click on {self.offer} by {self.lead}'
+    
 
 class LeadCampaignInterest(models.Model):
     INTEREST_CHOICES = [

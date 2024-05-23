@@ -40,5 +40,5 @@ class ClickViewSet(mixins.ListModelMixin,
                   viewsets.GenericViewSet):
     queryset = Click.objects.all()
     serializer_class = ClickSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ClickFilter
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
+    ordering_fields = ['timestamp', 'ip_address']
