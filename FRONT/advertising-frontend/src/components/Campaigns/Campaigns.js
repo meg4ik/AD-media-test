@@ -11,7 +11,7 @@ const Campaigns = () => {
 
   const fetchCampaigns = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/campaigns/');
+      const response = await axios.get('http://127.0.0.1:8088/api/campaigns/');
       setCampaigns(response.data.results);
     } catch (error) {
       console.error('Failed to fetch campaigns', error);

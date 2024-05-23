@@ -11,7 +11,7 @@ const LeadList = () => {
   const fetchLeads = async (page = 1) => {
     setLoading(true);
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/leads/', {
+      const response = await axios.get('http://127.0.0.1:8088/api/leads/', {
         params: {
           page: page,
         },

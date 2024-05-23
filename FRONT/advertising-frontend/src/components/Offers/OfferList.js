@@ -13,7 +13,7 @@ const OfferList = () => {
   const fetchOffers = async (page = 1, filter = '', order = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/offers/', {
+      const response = await axios.get('http://127.0.0.1:8088/api/offers/', {
         params: {
           page: page,
           search: filter,
@@ -90,8 +90,8 @@ const OfferList = () => {
               <td className="border p-2">{offer.campaign_name}</td>
               <td className="border p-2">{offer.click_price}</td>
               <td className="border p-2">
-                <a href={`http://127.0.0.1:8000/r/${offer.local_url}`} className="text-blue-500 hover:underline">
-                  {`http://127.0.0.1:8000/r/${offer.local_url}`}
+                <a href={`http://127.0.0.1:8088/r/${offer.local_url}`} className="text-blue-500 hover:underline">
+                  {`http://127.0.0.1:8088/r/${offer.local_url}`}
                 </a>
               </td>
             </tr>

@@ -28,7 +28,7 @@ const ConversionsGraph = () => {
   useEffect(() => {
     const fetchGraphData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/graphs/conversions/');
+        const response = await axios.get('http://127.0.0.1:8088/graphs/conversions/');
         const data = response.data;
         
         const labels = data.map(entry => entry.day);

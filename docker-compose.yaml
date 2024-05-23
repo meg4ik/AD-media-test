@@ -3,6 +3,8 @@ version: '3'
 services:
   db:
     image: postgres:13.3-alpine
+    env_file:
+      - ./BACK/.env
     volumes:
       - ./data/db:/var/lib/postgresql/data
     environment:
@@ -11,8 +13,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
-    env_file:
-      - ./BACK/.env
+
 
   django:
     build: ./BACK
@@ -26,3 +27,16 @@ services:
     env_file:
       - ./BACK/.env
     restart: on-failure
+
+  frontend:
+    build:
+      context: ./FRONT/advertising-frontend/
+      dockerfile: Dockerfile
+    container_name: frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - django
+
+volumes:
+  postgres_data:

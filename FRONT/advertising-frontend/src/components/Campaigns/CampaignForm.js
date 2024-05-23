@@ -11,7 +11,7 @@ const CampaignForm = ({ onAddCampaign }) => {
     e.preventDefault();
     const newCampaign = { name, start_date: startDate, end_date: endDate, goal };
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/campaigns/', newCampaign);
+      const response = await axios.post('http://127.0.0.1:8088/api/campaigns/', newCampaign);
       onAddCampaign(response.data);
       setName('');
       setStartDate('');

@@ -28,7 +28,7 @@ const ClicksGraph = ({ campaignId, offerId }) => {
   useEffect(() => {
     const fetchGraphData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/graphs/clicks/', {
+        const response = await axios.get('http://127.0.0.1:808/graphs/clicks/', {
           params: {
             campaign_id: campaignId,
             offer_id: offerId,

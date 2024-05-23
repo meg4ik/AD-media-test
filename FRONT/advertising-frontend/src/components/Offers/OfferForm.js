@@ -12,7 +12,7 @@ const OfferForm = ({ onAddOffer }) => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/campaigns/');
+        const response = await axios.get('http://127.0.0.1:8088/api/campaigns/');
         setCampaigns(response.data.results);
       } catch (error) {
         console.error('Failed to fetch campaigns', error);
@@ -25,7 +25,7 @@ const OfferForm = ({ onAddOffer }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/offers/', {
+      const response = await axios.post('http://127.0.0.1:8088/api/offers/', {
         name,
         redirect_url: redirectUrl,
         referrer_url: referrerUrl,

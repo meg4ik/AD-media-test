@@ -13,7 +13,7 @@ const CampaignList = () => {
   const fetchCampaigns = async (page = 1, filter = '', order = '') => {
     setLoading(true);
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/campaigns/', {
+      const response = await axios.get('http://127.0.0.1:8088/api/campaigns/', {
         params: {
           page: page,
           search: filter,
