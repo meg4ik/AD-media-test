@@ -23,7 +23,6 @@ class CampaignViewSetTests(APITestCase):
 
         self.assertEqual(len(data), 2)
 
-        # Проверяем, что все кампании есть в ответе
         campaign_names = [campaign['name'] for campaign in data]
         self.assertIn(self.campaign1.name, campaign_names)
         self.assertIn(self.campaign2.name, campaign_names)
